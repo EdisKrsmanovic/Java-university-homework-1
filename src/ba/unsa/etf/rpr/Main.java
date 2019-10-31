@@ -4,6 +4,8 @@ import ba.unsa.etf.rpr.ChessBoard.Board;
 import ba.unsa.etf.rpr.Exceptions.IllegalChessMoveException;
 import ba.unsa.etf.rpr.Pieces.Bishop;
 import ba.unsa.etf.rpr.Pieces.ChessPiece;
+import ba.unsa.etf.rpr.Pieces.Knight;
+import ba.unsa.etf.rpr.Pieces.Queen;
 
 public class Main {
      public static void main(String[] args) throws IllegalChessMoveException {
@@ -41,9 +43,7 @@ public class Main {
                 "primjenu komentara,\n" +
                 "atomic commits.\n");
     	Board b = new Board();
-    	String a="A";
-    	String c="C";
-    	b.move(a,c);
-         System.out.println(a + " " + c);
+    	ChessPiece chessPiece = new Queen("g6", ChessPiece.Color.WHITE);
+    	b.isValidMove(chessPiece, "d3");
     }
 }

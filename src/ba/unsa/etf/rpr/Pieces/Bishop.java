@@ -9,6 +9,6 @@ public class Bishop extends ChessPiece {
 
     @Override
     public void move(String position) throws IllegalArgumentException, IllegalChessMoveException {
-
+        setPosition(position);
     }
 }
