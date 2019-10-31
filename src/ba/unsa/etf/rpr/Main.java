@@ -1,7 +1,12 @@
 package ba.unsa.etf.rpr;
 
+import ba.unsa.etf.rpr.ChessBoard.Board;
+import ba.unsa.etf.rpr.Exceptions.IllegalChessMoveException;
+import ba.unsa.etf.rpr.Pieces.Bishop;
+import ba.unsa.etf.rpr.Pieces.ChessPiece;
+
 public class Main {
-     public static void main(String[] args) {
+     public static void main(String[] args) throws IllegalChessMoveException {
     	System.out.println("Potrebno je napraviti neki uvodni kod koji realizira igru šaha. Program neće imati neki korisnički interfejs, pošto to nije fokus u ovom trenutku. Pošto nismo radili vještačku inteligenciju, neće biti ni moguće igrati protiv računara. Zanemarićemo i neka od pravila same igre kako bi zadatak bio jednostavniji, kao što su: rokada, razmjena pijuna za druge figure, mat itd.\n" +
                 "\n" +
                 "Pravila igre šah se smatraju da su poznata, ako nisu predlažem da se upoznate.\n" +
@@ -35,5 +40,10 @@ public class Main {
                 "ispravno imenovanje paketa, klasa, metoda i promjenljivih,\n" +
                 "primjenu komentara,\n" +
                 "atomic commits.\n");
+    	Board b = new Board();
+    	String a="A";
+    	String c="C";
+    	b.move(a,c);
+         System.out.println(a + " " + c);
     }
 }
