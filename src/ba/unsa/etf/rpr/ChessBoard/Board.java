@@ -5,6 +5,9 @@ import ba.unsa.etf.rpr.Pieces.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import static ba.unsa.etf.rpr.ChessBoard.BoardUtil.isValidMove;
 
 public class Board {
     private Map<String, ChessPiece> figures = new HashMap<>();
@@ -14,21 +17,19 @@ public class Board {
     }
 
     public void move(Class type, ChessPiece.Color color, String position) throws IllegalChessMoveException {
-        if (figures.get(position) != null) {
-            throw new IllegalChessMoveException();
-        }
-
-        ChessPiece chessPiece = (ChessPiece) figures.entrySet()
+        Map.Entry<String, ChessPiece> suitableFigure = figures.entrySet()
                 .stream()
-                .filter(e -> hasSameColorSameTypeAndIsValidMove(type, color, position, e.getValue()))
+                .filter(e -> e.getValue().getColor() == color)
+                .filter(e -> e.getValue().getClass() == type)
+                .filter(e -> checkValidMove(position, e.getValue()))
                 .findFirst()
                 .orElse(null);
+        if (suitableFigure == null) throw new IllegalChessMoveException();
 
-        if (chessPiece == null) {
-            throw new IllegalChessMoveException();
-        }
-
-        chessPiece.move(position);
+        ChessPiece chessPiece = suitableFigure.getValue();
+        String oldPosition = chessPiece.getPosition();
+        String newPosition = position.toLowerCase();
+        moveFigure(chessPiece, oldPosition, newPosition);
     }
 
     public void move(String oldPosition, String newPosition) throws IllegalChessMoveException {
@@ -36,59 +37,52 @@ public class Board {
         newPosition = newPosition.toLowerCase();
 
         ChessPiece chessPiece = figures.get(oldPosition);
-
         if (chessPiece == null) {
             throw new IllegalArgumentException();
-        } else if (!isValidMove(chessPiece, newPosition)) {
+        }
+        if (!isValidMove(figures, chessPiece, newPosition)) {
             throw new IllegalChessMoveException();
         }
-
-        chessPiece.move(newPosition);
+        moveFigure(chessPiece, oldPosition, newPosition);
     }
 
     public boolean isCheck(ChessPiece.Color color) {
-        return false;
+        String kingsPosition = Objects.requireNonNull(figures.entrySet()
+                .stream()
+                .filter(e -> isKingOfGivenColor(color, e))
+                .findFirst()
+                .orElse(null))
+                .getValue()
+                .getPosition();
+
+        return figures.entrySet()
+                .stream()
+                .filter(e -> !e.getValue().getColor().equals(color))
+                .anyMatch(e -> checkValidMove(kingsPosition, e.getValue()));
     }
 
-    private boolean hasSameColorSameTypeAndIsValidMove(Class type, ChessPiece.Color color, String position, ChessPiece chessPiece) {
+    private void moveFigure(ChessPiece chessPiece, String oldPosition, String newPosition) throws IllegalChessMoveException {
+        ChessPiece otherChessPiece = figures.get(newPosition);
+        if (otherChessPiece != null) {
+            if (otherChessPiece.getColor() == chessPiece.getColor()) {
+                throw new IllegalChessMoveException();
+            }
+        }
+        figures.remove(oldPosition);
+        figures.put(newPosition, chessPiece);
+        chessPiece.setPosition(newPosition);
+    }
+
+    private boolean checkValidMove(String position, ChessPiece chessPiece) {
         try {
-            return isValidMove(chessPiece, position.toLowerCase()) && chessPiece.getColor().equals(color) && chessPiece.getClass() == type;
-        } catch (IllegalChessMoveException e) {
+            chessPiece.move(position);
+            return isValidMove(figures, chessPiece, position.toLowerCase());
+        } catch (Exception e) {
             return false;
         }
     }
 
-    public boolean isValidMove(ChessPiece chessPiece, String newPosition) throws IllegalChessMoveException {
-        chessPiece.move(newPosition);
-
-        String oldPosition = chessPiece.getPosition();
-        char posNumber1 = oldPosition.charAt(1);
-        char posLetter1 = oldPosition.charAt(0);
-        char posNumber2 = newPosition.charAt(1);
-        char posLetter2 = newPosition.charAt(0);
-
-        if (chessPiece.getClass() == Queen.class || chessPiece.getClass() == Bishop.class || chessPiece.getClass() == Rook.class || chessPiece.getClass() == Pawn.class) {
-            moveInLine(posLetter1, posNumber1, posLetter2, posNumber2);
-        }
-
-        return true;
-    }
-
-    private void moveInLine(char fromLetter, char fromNumber, char toLetter, char toNumber) throws IllegalChessMoveException {
-        int horizontalAddition = 0, verticalAddition = 0;
-
-        if (toLetter > fromLetter) verticalAddition = 1;
-        else if (toLetter < fromLetter) verticalAddition = -1;
-
-        if (toNumber > fromNumber) horizontalAddition = 1;
-        else if (toNumber < fromNumber) horizontalAddition = -1;
-        fromLetter += verticalAddition;
-        fromNumber += horizontalAddition;
-        while (fromLetter != toLetter || fromNumber != toNumber) {
-            String checkPlace = String.format("%c%c", fromLetter, fromNumber);
-            if (figures.get(checkPlace) != null) throw new IllegalChessMoveException();
-            fromLetter += verticalAddition;
-            fromNumber += horizontalAddition;
-        }
+    private boolean isKingOfGivenColor(ChessPiece.Color color, Map.Entry<String, ChessPiece> e) {
+        return e.getValue().getClass() == King.class && e.getValue().getColor() == color;
     }
 }

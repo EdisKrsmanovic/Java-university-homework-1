@@ -24,7 +24,7 @@ public abstract class ChessPiece {
         return color;
     }
 
-    void setPosition(String position) {
+    public void setPosition(String position) {
         this.position = position;
     }
 }

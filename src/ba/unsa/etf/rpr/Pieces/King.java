@@ -10,5 +10,6 @@ public class King extends ChessPiece {
 
     @Override
     public void move(String position) throws IllegalArgumentException, IllegalChessMoveException {
+        throw new IllegalArgumentException();
     }
 }

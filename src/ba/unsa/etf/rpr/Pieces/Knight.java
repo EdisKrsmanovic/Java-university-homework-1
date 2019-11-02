@@ -9,6 +9,6 @@ public class Knight extends ChessPiece {
 
     @Override
     public void move(String position) throws IllegalArgumentException, IllegalChessMoveException {
-
+        throw new IllegalArgumentException();
     }
 }

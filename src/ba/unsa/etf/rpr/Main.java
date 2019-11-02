@@ -2,10 +2,7 @@ package ba.unsa.etf.rpr;
 
 import ba.unsa.etf.rpr.ChessBoard.Board;
 import ba.unsa.etf.rpr.Exceptions.IllegalChessMoveException;
-import ba.unsa.etf.rpr.Pieces.Bishop;
-import ba.unsa.etf.rpr.Pieces.ChessPiece;
-import ba.unsa.etf.rpr.Pieces.Knight;
-import ba.unsa.etf.rpr.Pieces.Queen;
+import ba.unsa.etf.rpr.Pieces.*;
 
 public class Main {
      public static void main(String[] args) throws IllegalChessMoveException {
@@ -42,8 +39,14 @@ public class Main {
                 "ispravno imenovanje paketa, klasa, metoda i promjenljivih,\n" +
                 "primjenu komentara,\n" +
                 "atomic commits.\n");
-    	Board b = new Board();
-    	ChessPiece chessPiece = new Queen("g6", ChessPiece.Color.WHITE);
-    	b.isValidMove(chessPiece, "d3");
+		Board b = new Board();
+//		boolean no = b.isCheck(ChessPiece.Color.WHITE);
+		 b.move(Pawn.class, ChessPiece.Color.BLACK, "e5");
+		 b.move(Pawn.class, ChessPiece.Color.BLACK, "e4");
+		 b.move(Pawn.class, ChessPiece.Color.BLACK, "e5");
+//		 b.move(Bishop.class, ChessPiece.Color.WHITE, "d3");
+//		 b.move(Bishop.class, ChessPiece.Color.WHITE, "d6");
+//		 b.move(Bishop.class, ChessPiece.Color.WHITE, "g3");
+//		 b.move(Bishop.class, ChessPiece.Color.WHITE, "a3");
     }
 }
