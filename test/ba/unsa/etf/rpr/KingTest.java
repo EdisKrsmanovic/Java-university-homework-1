@@ -1,5 +1,9 @@
 package ba.unsa.etf.rpr;
 
+import ba.unsa.etf.rpr.Exceptions.IllegalChessMoveException;
+import ba.unsa.etf.rpr.Pieces.ChessPiece;
+import ba.unsa.etf.rpr.Pieces.King;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class KingTest {

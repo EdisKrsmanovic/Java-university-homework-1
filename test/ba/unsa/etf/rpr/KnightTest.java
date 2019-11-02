@@ -1,5 +1,7 @@
 package ba.unsa.etf.rpr;
 
+import ba.unsa.etf.rpr.Pieces.ChessPiece;
+import ba.unsa.etf.rpr.Pieces.Knight;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

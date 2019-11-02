@@ -27,7 +27,7 @@ public class Board {
         if (suitableFigure == null) throw new IllegalChessMoveException();
 
         ChessPiece chessPiece = suitableFigure.getValue();
-        String oldPosition = chessPiece.getPosition();
+        String oldPosition = suitableFigure.getKey();
         String newPosition = position.toLowerCase();
         moveFigure(chessPiece, oldPosition, newPosition);
     }
@@ -52,13 +52,12 @@ public class Board {
                 .filter(e -> isKingOfGivenColor(color, e))
                 .findFirst()
                 .orElse(null))
-                .getValue()
-                .getPosition();
+                .getKey();
 
         return figures.entrySet()
                 .stream()
                 .filter(e -> !e.getValue().getColor().equals(color))
-                .anyMatch(e -> checkValidMove(kingsPosition, e.getValue()));
+                .anyMatch(e ->checkValidMove(kingsPosition, e.getValue()));
     }
 
     private void moveFigure(ChessPiece chessPiece, String oldPosition, String newPosition) throws IllegalChessMoveException {
@@ -68,15 +67,24 @@ public class Board {
                 throw new IllegalChessMoveException();
             }
         }
+//        System.out.println(oldPosition + " " + newPosition);
         figures.remove(oldPosition);
         figures.put(newPosition, chessPiece);
-        chessPiece.setPosition(newPosition);
+        chessPiece.move(newPosition);
     }
 
     private boolean checkValidMove(String position, ChessPiece chessPiece) {
         try {
-            chessPiece.move(position);
-            return isValidMove(figures, chessPiece, position.toLowerCase());
+            String oldPosition = chessPiece.getPosition();
+            String newPosition = position.toLowerCase();
+
+            chessPiece.move(newPosition);
+
+            if(chessPiece.getClass() == Pawn.class) chessPiece = new Pawn(oldPosition, chessPiece.getColor());
+            else chessPiece.move(oldPosition);
+
+            return isValidMove(figures, chessPiece, newPosition);
+
         } catch (Exception e) {
             return false;
         }

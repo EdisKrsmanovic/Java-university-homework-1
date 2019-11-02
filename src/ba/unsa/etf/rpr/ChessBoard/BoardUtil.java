@@ -10,8 +10,8 @@ class BoardUtil {
         figures.put("a1", new Rook("a1", ChessPiece.Color.WHITE));
         figures.put("b1", new Knight("b1", ChessPiece.Color.WHITE));
         figures.put("c1", new Bishop("c1", ChessPiece.Color.WHITE));
-        figures.put("d1", new King("d1", ChessPiece.Color.WHITE));
-        figures.put("e1", new Queen("e1", ChessPiece.Color.WHITE));
+        figures.put("d1", new Queen("d1", ChessPiece.Color.WHITE));
+        figures.put("e1", new King("e1", ChessPiece.Color.WHITE));
         figures.put("f1", new Bishop("f1", ChessPiece.Color.WHITE));
         figures.put("g1", new Knight("g1", ChessPiece.Color.WHITE));
         figures.put("h1", new Rook("h1", ChessPiece.Color.WHITE));
@@ -70,6 +70,7 @@ class BoardUtil {
             if (figures.get(checkPlace) != null) throw new IllegalChessMoveException();
             fromLetter += verticalAddition;
             fromNumber += horizontalAddition;
+            if(fromLetter > 'h' || fromNumber > '8' || fromLetter < 'a' || fromNumber <= '0') break;
         }
     }
 }

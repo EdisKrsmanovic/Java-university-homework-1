@@ -6,7 +6,9 @@ public abstract class ChessPiece {
     private String position;
     private Color color;
 
-    public static enum Color {WHITE, BLACK};
+    public static enum Color {WHITE, BLACK}
+
+    ;
 
     public ChessPiece(String position, Color color) throws IllegalArgumentException {
         this.position = position;
@@ -24,7 +26,15 @@ public abstract class ChessPiece {
         return color;
     }
 
-    public void setPosition(String position) {
+    void setPosition(String position) {
         this.position = position;
+    }
+
+    void checkCorrectPosition(String position) {
+        if (position.length() != 2) throw new IllegalArgumentException();
+        char positionLetter = position.toLowerCase().charAt(0);
+        char positionNumber = position.toLowerCase().charAt(1);
+        if (positionLetter > 'h' || positionNumber > '8' || positionLetter < 'a' || positionNumber <= '0')
+            throw new IllegalArgumentException();
     }
 }

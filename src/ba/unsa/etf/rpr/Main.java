@@ -40,13 +40,17 @@ public class Main {
                 "primjenu komentara,\n" +
                 "atomic commits.\n");
 		Board b = new Board();
-//		boolean no = b.isCheck(ChessPiece.Color.WHITE);
-		 b.move(Pawn.class, ChessPiece.Color.BLACK, "e5");
-		 b.move(Pawn.class, ChessPiece.Color.BLACK, "e4");
-		 b.move(Pawn.class, ChessPiece.Color.BLACK, "e5");
-//		 b.move(Bishop.class, ChessPiece.Color.WHITE, "d3");
-//		 b.move(Bishop.class, ChessPiece.Color.WHITE, "d6");
-//		 b.move(Bishop.class, ChessPiece.Color.WHITE, "g3");
-//		 b.move(Bishop.class, ChessPiece.Color.WHITE, "a3");
+		 b.move("E2", "E4");
+		 b.move("E4", "E5");
+		 b.move("E5", "E6");
+		 b.move("E6", "D7");
+		 b.move("D7", "C8");
+		 b.move("D1", "E2");
+		 b.move("F2", "F4");
+		 b.move("F4", "F5");
+		 b.move("F5", "F6");
+		 b.move("F6", "E7");
+		 b.move("E7", "F8");
+		 System.out.println(b.isCheck(ChessPiece.Color.BLACK));
     }
 }

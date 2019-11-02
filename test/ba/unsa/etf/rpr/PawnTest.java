@@ -1,5 +1,8 @@
 package ba.unsa.etf.rpr;
 
+import ba.unsa.etf.rpr.Pieces.ChessPiece;
+import ba.unsa.etf.rpr.Pieces.Pawn;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PawnTest {
