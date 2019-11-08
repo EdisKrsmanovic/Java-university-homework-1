@@ -26,7 +26,7 @@ public class Board {
                 .filter(e -> checkValidMove(e.getKey(), newPosition, e.getValue()))
                 .findFirst()
                 .orElse(null);
-        if (suitableFigure == null) throw new IllegalChessMoveException();
+        if (suitableFigure == null) throw new IllegalChessMoveException("No figure found to move");
         ChessPiece chessPiece = suitableFigure.getValue();
         String oldPosition = suitableFigure.getKey();
         moveFigure(chessPiece, oldPosition, newPosition);
@@ -41,7 +41,7 @@ public class Board {
             throw new IllegalArgumentException();
         }
         if (!isValidMove(figures, chessPiece, newPosition)) {
-            throw new IllegalChessMoveException();
+            throw new IllegalChessMoveException("Invalid move, you are trying to jump over figures with a non-Knight figure");
         }
         moveFigure(chessPiece, oldPosition, newPosition);
     }
@@ -65,10 +65,10 @@ public class Board {
         ChessPiece otherChessPiece = figures.get(newPosition);
         if (otherChessPiece != null) {
             if (otherChessPiece.getColor() == chessPiece.getColor()) {
-                throw new IllegalChessMoveException();
+                throw new IllegalChessMoveException("Illegal move, you are trying to move a figure onto a figure of same color");
             }
         }
-        if(!checkValidMove(oldPosition, newPosition, chessPiece)) throw new IllegalChessMoveException();
+        if(!checkValidMove(oldPosition, newPosition, chessPiece)) throw new IllegalChessMoveException("Illegal move, you are trying to move a figure in a way its not supposed to move");
         ChessPiece temporaryChessPiece = figures.get(newPosition);
         figures.remove(oldPosition);
         figures.put(newPosition, chessPiece);
@@ -76,7 +76,7 @@ public class Board {
         if(isInCheck && isCheck(chessPiece.getColor())) {
             figures.put(newPosition, temporaryChessPiece);
             figures.put(oldPosition, chessPiece);
-            throw new IllegalChessMoveException();
+            throw new IllegalChessMoveException("Illegal move, you are trying to move a figure that is not preventing a check");
         }
     }
 
@@ -90,13 +90,10 @@ public class Board {
             if(chessPiece.getClass() == Pawn.class) {
                 chessPiece = new Pawn(oldPosition, chessPiece.getColor());
                 if(oldPosition.charAt(0) != newPosition.charAt(0) && oldPosition.charAt(1) != newPosition.charAt(1)) {
-                    if(figures.get(newPosition) == null) throw new IllegalChessMoveException();
-                    if(figures.get(newPosition).getColor() == chessPiece.getColor()) throw new IllegalChessMoveException();
+                    if(figures.get(newPosition) == null) throw new IllegalChessMoveException("Illegal move, you are trying to eat nothing with a Pawn");
+                    if(figures.get(newPosition).getColor() == chessPiece.getColor()) throw new IllegalChessMoveException("Illegal move, you are trying to move a Pawn onto a figure of same color");
                 }
-                else if(figures.get(newPosition) != null) {
-                    throw new IllegalChessMoveException();
-
-                }
+                else if(figures.get(newPosition) != null)  throw new IllegalChessMoveException("Illegal move, you are trying to eat a figure with a Pawn in a way its not supposed to be done");
             }
             else chessPiece.move(oldPosition);
 

@@ -10,35 +10,35 @@ public class Main {
     public static void main(String[] args) {
         Board b = new Board();
         Scanner scanner = new Scanner(System.in);
-        String unos;
+        String input;
         String player = "White";
 		while (true) {
 			ChessPiece.Color color = ChessPiece.Color.valueOf(player.toUpperCase());
 			if(b.isCheck(color)) System.out.println("CHECK!!!");
 			System.out.print(player + " move: ");
-            unos = scanner.nextLine();
-            if (unos.equals("X")) {
+            input = scanner.nextLine();
+            if (input.equals("X")) {
                 System.out.println(player + " gave up!");
                 break;
             }
-            if (unos.length() != 2 && unos.length() != 3) {
-                System.out.println("Neispravna unos!");
+            if (input.length() != 2 && input.length() != 3) {
+                System.out.println("Invalid input!");
                 continue;
-            } else if (unos.length() == 2) {
-                if (unos.charAt(0) < 'a' || unos.charAt(0) > 'h' || unos.charAt(1) < '1' || unos.charAt(1) > '8') {
-                    System.out.println("Neispravan unos!");
+            } else if (input.length() == 2) {
+                if (input.charAt(0) < 'a' || input.charAt(0) > 'h' || input.charAt(1) < '1' || input.charAt(1) > '8') {
+                    System.out.println("Invalid input!");
                     continue;
                 }
                 try {
-					b.move(Pawn.class, color, unos);
+					b.move(Pawn.class, color, input);
 				} catch (IllegalChessMoveException e) {
-					System.out.println("Ilegalan potez");
+                    System.out.println("Illegal move");
 					continue;
 				}
 			} else {
-            	char figureLetter = unos.charAt(0);
-                if (unos.charAt(1) < 'a' || unos.charAt(1) > 'h' || unos.charAt(2) < '1' || unos.charAt(2) > '8' || (figureLetter != 'K' && figureLetter != 'Q' && figureLetter != 'R' && figureLetter != 'B' && figureLetter != 'N')) {
-                    System.out.println("Neispravan unos!");
+            	char figureLetter = input.charAt(0);
+                if (input.charAt(1) < 'a' || input.charAt(1) > 'h' || input.charAt(2) < '1' || input.charAt(2) > '8' || (figureLetter != 'K' && figureLetter != 'Q' && figureLetter != 'R' && figureLetter != 'B' && figureLetter != 'N')) {
+                    System.out.println("Invalid input!");
                     continue;
                 }
 
@@ -50,9 +50,9 @@ public class Main {
                 else type = Rook.class;
 
 				try {
-					b.move(type, color, unos.substring(1,3));
+					b.move(type, color, input.substring(1,3));
 				} catch (IllegalChessMoveException e) {
-					System.out.println("Ilegalan potez");
+                    System.out.println("Illegal move");
 					continue;
 				}
 			}

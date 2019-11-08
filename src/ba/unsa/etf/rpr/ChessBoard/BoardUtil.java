@@ -45,7 +45,7 @@ class BoardUtil {
         figures.put("h7", new Pawn("h7", ChessPiece.Color.BLACK));
     }
 
-    static boolean isValidMove(Map<String, ChessPiece> figures, ChessPiece chessPiece, String newPosition) throws IllegalChessMoveException {
+    static boolean   isValidMove(Map<String, ChessPiece> figures, ChessPiece chessPiece, String newPosition) throws IllegalChessMoveException {
         String oldPosition = chessPiece.getPosition();
 
         if (chessPiece.getClass() == Queen.class || chessPiece.getClass() == Bishop.class || chessPiece.getClass() == Rook.class || chessPiece.getClass() == Pawn.class) {
@@ -67,7 +67,7 @@ class BoardUtil {
         fromNumber += horizontalAddition;
         while (fromLetter != toLetter || fromNumber != toNumber) {
             String checkPlace = String.format("%c%c", fromLetter, fromNumber);
-            if (figures.get(checkPlace) != null) throw new IllegalChessMoveException();
+            if (figures.get(checkPlace) != null) throw new IllegalChessMoveException("Illegal move, you are trying to jump over a figure");
             fromLetter += verticalAddition;
             fromNumber += horizontalAddition;
             if(fromLetter > 'h' || fromNumber > '8' || fromLetter < 'a' || fromNumber <= '0') break;

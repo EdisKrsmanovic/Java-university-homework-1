@@ -24,18 +24,18 @@ class PiecesUtil {
         boolean diagonalMove = Math.abs(oldPositionLetter - newPositionLetter) != Math.abs(oldPositionNumber - newPositionNumber);
 
         if (figureLetter == 'B') {
-            if (diagonalMove) throw new IllegalChessMoveException();
+            if (diagonalMove) throw new IllegalChessMoveException("You can't move that way!");
         } else if (figureLetter == 'R') {
             if (newPositionLetter != oldPositionLetter && newPositionNumber != oldPositionNumber)
-                throw new IllegalChessMoveException();
+                throw new IllegalChessMoveException("You can't move that way!");
         } else if (figureLetter == 'Q') {
             if (diagonalMove && newPositionLetter != oldPositionLetter && newPositionNumber != oldPositionNumber)
-                throw new IllegalChessMoveException();
+                throw new IllegalChessMoveException("You can't move that way!");
         } else if (figureLetter == 'N') {
             if (!(letterCount == 2 && numberCount == 1) && !(numberCount == 2 && letterCount == 1))
-                throw new IllegalChessMoveException();
+                throw new IllegalChessMoveException("You can't move that way!");
         } else if (figureLetter == 'K') {
-            if (letterCount > 1 || numberCount > 1) throw new IllegalChessMoveException();
+            if (letterCount > 1 || numberCount > 1) throw new IllegalChessMoveException("You can't move that way!");
         }
     }
 

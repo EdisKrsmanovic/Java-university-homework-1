@@ -25,14 +25,14 @@ public class Pawn extends ChessPiece {
         char newPositionNumber = position.toLowerCase().charAt(1);
 
         if (oldPositionLetter != newPositionLetter) {
-            if (oldPositionNumber + directionMultiplier != newPositionNumber || Math.abs(oldPositionLetter - newPositionLetter) != 1) throw new IllegalArgumentException();
+            if (oldPositionNumber + directionMultiplier != newPositionNumber || Math.abs(oldPositionLetter - newPositionLetter) != 1) throw new IllegalChessMoveException("You can't move that way!");
 
         } else if (oldPositionNumber + 2 * directionMultiplier == newPositionNumber) {
             if (alreadyMoved) throw new IllegalArgumentException();
             alreadyMoved = true;
         } else {
             int numberOfSteps = newPositionNumber - oldPositionNumber;
-            if (numberOfSteps != directionMultiplier && numberOfSteps != 0) throw new IllegalArgumentException();
+            if (numberOfSteps != directionMultiplier && numberOfSteps != 0) throw new IllegalChessMoveException("You can't move that way!");
         }
         super.setPosition(position);
     }
