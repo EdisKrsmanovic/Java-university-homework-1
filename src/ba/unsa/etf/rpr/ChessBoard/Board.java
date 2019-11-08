@@ -17,18 +17,17 @@ public class Board {
     }
 
     public void move(Class type, ChessPiece.Color color, String position) throws IllegalChessMoveException {
+        String newPosition = position.toLowerCase();
         Map.Entry<String, ChessPiece> suitableFigure = figures.entrySet()
                 .stream()
                 .filter(e -> e.getValue().getColor() == color)
                 .filter(e -> e.getValue().getClass() == type)
-                .filter(e -> checkValidMove(position, e.getValue()))
+                .filter(e -> checkValidMove(e.getKey(), newPosition, e.getValue()))
                 .findFirst()
                 .orElse(null);
         if (suitableFigure == null) throw new IllegalChessMoveException();
-
         ChessPiece chessPiece = suitableFigure.getValue();
         String oldPosition = suitableFigure.getKey();
-        String newPosition = position.toLowerCase();
         moveFigure(chessPiece, oldPosition, newPosition);
     }
 
@@ -57,30 +56,48 @@ public class Board {
         return figures.entrySet()
                 .stream()
                 .filter(e -> !e.getValue().getColor().equals(color))
-                .anyMatch(e ->checkValidMove(kingsPosition, e.getValue()));
+                .anyMatch(e ->checkValidMove(e.getKey(), kingsPosition, e.getValue()));
     }
 
     private void moveFigure(ChessPiece chessPiece, String oldPosition, String newPosition) throws IllegalChessMoveException {
+        boolean isInCheck = isCheck(chessPiece.getColor());
         ChessPiece otherChessPiece = figures.get(newPosition);
         if (otherChessPiece != null) {
             if (otherChessPiece.getColor() == chessPiece.getColor()) {
                 throw new IllegalChessMoveException();
             }
         }
+        if(!checkValidMove(oldPosition, newPosition, chessPiece)) throw new IllegalChessMoveException();
 //        System.out.println(oldPosition + " " + newPosition);
+        ChessPiece temporaryChessPiece = figures.get(newPosition);
         figures.remove(oldPosition);
         figures.put(newPosition, chessPiece);
         chessPiece.move(newPosition);
+        if(isInCheck && isCheck(chessPiece.getColor())) { //radi potez koji ne sprijecava šah
+            figures.put(newPosition, temporaryChessPiece);
+            figures.put(oldPosition, chessPiece);
+            throw new IllegalChessMoveException();
+        }
     }
 
-    private boolean checkValidMove(String position, ChessPiece chessPiece) {
+    private boolean checkValidMove(String oldPosition, String newPosition, ChessPiece chessPiece) {
         try {
-            String oldPosition = chessPiece.getPosition();
-            String newPosition = position.toLowerCase();
+            oldPosition = oldPosition.toLowerCase();
+            newPosition = newPosition.toLowerCase();
 
             chessPiece.move(newPosition);
 
-            if(chessPiece.getClass() == Pawn.class) chessPiece = new Pawn(oldPosition, chessPiece.getColor());
+            if(chessPiece.getClass() == Pawn.class) {
+                chessPiece = new Pawn(oldPosition, chessPiece.getColor());
+                if(oldPosition.charAt(0) != newPosition.charAt(0) && oldPosition.charAt(1) != newPosition.charAt(1)) { //pokusava jesti
+                    if(figures.get(newPosition) == null) throw new IllegalChessMoveException(); //ne postoji figura na tom mjestu
+                    if(figures.get(newPosition).getColor() == chessPiece.getColor()) throw new IllegalChessMoveException(); //ne moze jesti svog
+                }
+                else if(figures.get(newPosition) != null) {
+                    throw new IllegalChessMoveException(); //ne moze jesti ravno kada ide
+
+                }
+            }
             else chessPiece.move(oldPosition);
 
             return isValidMove(figures, chessPiece, newPosition);
