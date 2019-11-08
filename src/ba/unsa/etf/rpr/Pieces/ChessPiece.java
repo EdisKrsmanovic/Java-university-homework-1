@@ -13,7 +13,6 @@ public abstract class ChessPiece {
         this.color = color;
     }
 
-    //treba napraviti da move provjerava da li je ta vrsta poteza dozvoljena, npr da pijun ne moze 3 polja preci il da kraljica skace ko konj
     public abstract void move(String position) throws IllegalArgumentException, IllegalChessMoveException;
 
     public String getPosition() {
@@ -26,13 +25,5 @@ public abstract class ChessPiece {
 
     void setPosition(String position) {
         this.position = position;
-    }
-
-    void checkCorrectPosition(String position) {
-        if (position.length() != 2) throw new IllegalArgumentException();
-        char positionLetter = position.toLowerCase().charAt(0);
-        char positionNumber = position.toLowerCase().charAt(1);
-        if (positionLetter > 'h' || positionNumber > '8' || positionLetter < 'a' || positionNumber <= '0')
-            throw new IllegalArgumentException();
     }
 }

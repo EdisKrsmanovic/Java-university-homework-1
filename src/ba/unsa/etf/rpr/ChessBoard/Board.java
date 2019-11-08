@@ -69,12 +69,11 @@ public class Board {
             }
         }
         if(!checkValidMove(oldPosition, newPosition, chessPiece)) throw new IllegalChessMoveException();
-//        System.out.println(oldPosition + " " + newPosition);
         ChessPiece temporaryChessPiece = figures.get(newPosition);
         figures.remove(oldPosition);
         figures.put(newPosition, chessPiece);
         chessPiece.move(newPosition);
-        if(isInCheck && isCheck(chessPiece.getColor())) { //radi potez koji ne sprijecava šah
+        if(isInCheck && isCheck(chessPiece.getColor())) {
             figures.put(newPosition, temporaryChessPiece);
             figures.put(oldPosition, chessPiece);
             throw new IllegalChessMoveException();
@@ -90,12 +89,12 @@ public class Board {
 
             if(chessPiece.getClass() == Pawn.class) {
                 chessPiece = new Pawn(oldPosition, chessPiece.getColor());
-                if(oldPosition.charAt(0) != newPosition.charAt(0) && oldPosition.charAt(1) != newPosition.charAt(1)) { //pokusava jesti
-                    if(figures.get(newPosition) == null) throw new IllegalChessMoveException(); //ne postoji figura na tom mjestu
-                    if(figures.get(newPosition).getColor() == chessPiece.getColor()) throw new IllegalChessMoveException(); //ne moze jesti svog
+                if(oldPosition.charAt(0) != newPosition.charAt(0) && oldPosition.charAt(1) != newPosition.charAt(1)) {
+                    if(figures.get(newPosition) == null) throw new IllegalChessMoveException();
+                    if(figures.get(newPosition).getColor() == chessPiece.getColor()) throw new IllegalChessMoveException();
                 }
                 else if(figures.get(newPosition) != null) {
-                    throw new IllegalChessMoveException(); //ne moze jesti ravno kada ide
+                    throw new IllegalChessMoveException();
 
                 }
             }
