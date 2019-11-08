@@ -20,6 +20,7 @@ public class Board {
         String newPosition = position.toLowerCase();
         Map.Entry<String, ChessPiece> suitableFigure = figures.entrySet()
                 .stream()
+                .filter(e -> e.getValue() != null)
                 .filter(e -> e.getValue().getColor() == color)
                 .filter(e -> e.getValue().getClass() == type)
                 .filter(e -> checkValidMove(e.getKey(), newPosition, e.getValue()))
@@ -55,8 +56,8 @@ public class Board {
 
         return figures.entrySet()
                 .stream()
-                .filter(e -> !e.getValue().getColor().equals(color))
-                .anyMatch(e ->checkValidMove(e.getKey(), kingsPosition, e.getValue()));
+                .filter(e -> isOfOpositeColor(color, e))
+                .anyMatch(e -> checkValidMove(e.getKey(), kingsPosition, e.getValue()));
     }
 
     private void moveFigure(ChessPiece chessPiece, String oldPosition, String newPosition) throws IllegalChessMoveException {
@@ -106,8 +107,12 @@ public class Board {
             return false;
         }
     }
-
+    private boolean isOfOpositeColor(ChessPiece.Color color, Map.Entry<String, ChessPiece> e) {
+        if(e.getValue() == null) return false;
+        else return !e.getValue().getColor().equals(color);
+    }
     private boolean isKingOfGivenColor(ChessPiece.Color color, Map.Entry<String, ChessPiece> e) {
+        if(e.getValue() == null) return false;
         return e.getValue().getClass() == King.class && e.getValue().getColor() == color;
     }
 }

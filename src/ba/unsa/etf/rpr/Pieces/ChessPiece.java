@@ -8,8 +8,6 @@ public abstract class ChessPiece {
 
     public static enum Color {WHITE, BLACK}
 
-    ;
-
     public ChessPiece(String position, Color color) throws IllegalArgumentException {
         this.position = position;
         this.color = color;
