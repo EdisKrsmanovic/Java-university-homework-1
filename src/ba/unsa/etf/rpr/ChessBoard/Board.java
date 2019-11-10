@@ -60,6 +60,7 @@ public class Board {
                 .anyMatch(e -> checkValidMove(e.getKey(), kingsPosition, e.getValue()));
     }
 
+    //This method should check if someone is trying to eat a King which is forbidden, but we aren't supposed to implement all of the rules apparently.
     private void moveFigure(ChessPiece chessPiece, String oldPosition, String newPosition) throws IllegalChessMoveException {
         boolean isInCheck = isCheck(chessPiece.getColor());
         ChessPiece otherChessPiece = figures.get(newPosition);
@@ -73,7 +74,8 @@ public class Board {
         figures.remove(oldPosition);
         figures.put(newPosition, chessPiece);
         chessPiece.move(newPosition);
-        if(isInCheck && isCheck(chessPiece.getColor())) {
+                                                            //Checking if a move is preventing check even tho it was not defined in a text given to us.
+        if(isInCheck && isCheck(chessPiece.getColor())) {   //Currently not checking if a move is going to cause a self-check because "we are not implementing all of the rules"
             figures.put(newPosition, temporaryChessPiece);
             figures.put(oldPosition, chessPiece);
             throw new IllegalChessMoveException("Illegal move, you are trying to move a figure that is not preventing a check");

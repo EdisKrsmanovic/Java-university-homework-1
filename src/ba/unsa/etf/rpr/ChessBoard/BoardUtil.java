@@ -45,7 +45,7 @@ class BoardUtil {
         figures.put("h7", new Pawn("h7", ChessPiece.Color.BLACK));
     }
 
-    static boolean   isValidMove(Map<String, ChessPiece> figures, ChessPiece chessPiece, String newPosition) throws IllegalChessMoveException {
+    static boolean  isValidMove(Map<String, ChessPiece> figures, ChessPiece chessPiece, String newPosition) throws IllegalChessMoveException {
         String oldPosition = chessPiece.getPosition();
 
         if (chessPiece.getClass() == Queen.class || chessPiece.getClass() == Bishop.class || chessPiece.getClass() == Rook.class || chessPiece.getClass() == Pawn.class) {

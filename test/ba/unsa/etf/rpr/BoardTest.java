@@ -269,4 +269,134 @@ class BoardTest {
                 }
         );
     }
+
+    @Test
+    void moveThrowsIfIsCheckNotPrevented() {
+        Board b = new Board();
+        assertDoesNotThrow(
+                () -> {
+                    b.move("C2", "C3");
+                    b.move("D7", "D6");
+                    b.move("D1", "A4");
+                }
+        );
+        assertThrows(IllegalChessMoveException.class, () -> b.move("E7","E6"));
+    }
+
+    @Test
+    void moveDoesNotThrowIfIsCheckIsPrevented() {
+        Board b = new Board();
+        assertDoesNotThrow(
+                () -> {
+                    b.move("C2", "C3");
+                    b.move("D7", "D6");
+                    b.move("D1", "A4");
+                }
+        );
+        assertDoesNotThrow(() -> b.move("B8","C6"));
+    }
+
+    @Test
+    void combinationOfIllegalAndLegalMoves() {
+        Board b = new Board();
+        assertDoesNotThrow(
+                () -> {
+                    b.move("C2", "C3");
+                    b.move("D7", "D6");
+                    b.move("D1", "A4");
+                }
+        );
+        assertThrows(IllegalChessMoveException.class, () -> b.move("E7","E6"));
+        assertDoesNotThrow(() -> b.move("B8","C6"));
+    }
+
+    @Test
+    void whitePawnCannotJumpPieces() {
+        Board b = new Board();
+        assertDoesNotThrow(
+                () -> {
+                    b.move("A7", "A5");
+                    b.move("A5", "A4");
+                    b.move("A4", "A3");
+                }
+        );
+        assertThrows(IllegalChessMoveException.class, () -> b.move("A2","A4"));
+    }
+
+    @Test
+    void blackPawnCannotJumpPieces() {
+        Board b = new Board();
+        assertDoesNotThrow(
+                () -> {
+                    b.move("H2", "H4");
+                    b.move("H4", "H5");
+                    b.move("H5", "H6");
+                }
+        );
+        assertThrows(IllegalChessMoveException.class, () -> b.move("H7","H5"));
+    }
+
+    @Test
+    void whitePawnCannotEatVertically() {
+        Board b = new Board();
+        assertDoesNotThrow(
+                () -> {
+                    b.move("A7", "A5");
+                    b.move("A5", "A4");
+                }
+        );
+        assertThrows(IllegalChessMoveException.class, () -> b.move("A2","A4"));
+        assertDoesNotThrow(
+                () -> {
+                    b.move("A4", "A3");
+                }
+        );
+        assertThrows(IllegalChessMoveException.class, () -> b.move("A2","A3"));
+    }
+
+    @Test
+    void blackPawnCannotEatVertically() {
+        Board b = new Board();
+        assertDoesNotThrow(
+                () -> {
+                    b.move("H2", "H4");
+                    b.move("H4", "H5");
+                }
+        );
+        assertThrows(IllegalChessMoveException.class, () -> b.move("H7","H5"));
+        assertDoesNotThrow(
+                () -> {
+                    b.move("H5", "H6");
+                }
+        );
+        assertThrows(IllegalChessMoveException.class, () -> b.move("H7","H6"));
+    }
+
+    @Test
+    void moveShouldWorkWithLowercaseLetters1() {
+        Board b = new Board();
+        assertDoesNotThrow(
+                () -> {
+                    b.move("e2", "E4");
+                    b.move("e4", "E5");
+                    b.move("e5", "e6");
+                    b.move("e6", "D7");
+                    b.move("d7", "c8");
+                }
+        );
+    }
+
+    @Test
+    void moveShouldWorkWithLowercaseLetters2() {
+        Board b = new Board();
+        assertDoesNotThrow(
+                () -> {
+                    b.move(Pawn.class, ChessPiece.Color.WHITE, "E4");
+                    b.move(Pawn.class, ChessPiece.Color.WHITE,  "E5");
+                    b.move(Pawn.class, ChessPiece.Color.WHITE, "e6");
+                    b.move(Pawn.class, ChessPiece.Color.WHITE, "D7");
+                    b.move(Pawn.class, ChessPiece.Color.WHITE, "c8");
+                }
+        );
+    }
 }
